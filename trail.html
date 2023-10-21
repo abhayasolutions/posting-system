@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Post System</title>
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+}
+
+.post-form {
+    padding: 20px;
+    background-color: #f2f2f2;
+}
+
+.post-form input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.post-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    max-width: 400px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.like-button {
+    cursor: pointer;
+}
+
+.comment-section {
+    margin-top: 10px;
+}
+
+.comment-input {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+</style>
+<body>
+    <div class="post-form">
+        <input type="text" id="post-title" placeholder="Enter post title">
+        <input type="file" id="post-image" accept="image/*">
+        <button onclick="createPost()">Create Post</button>
+    </div>
+    <div class="post-container" id="post-container">
+        <!-- Posts will be displayed here -->
+    </div>
+    <script>
+        const postContainer = document.getElementById('post-container');
+
+function createPost() {
+    const postTitle = document.getElementById('post-title').value;
+    const postImage = document.getElementById('post-image').files[0];
+    if (postTitle === '' || !postImage) {
+        alert('Please enter a title and select an image.');
+        return;
+    }
+
+    const post = document.createElement('div');
+    post.className = 'post';
+
+    const postImageElement = document.createElement('img');
+    postImageElement.src = URL.createObjectURL(postImage);
+
+    const postTitleElement = document.createElement('h2');
+    postTitleElement.textContent = postTitle;
+
+    const likeButton = document.createElement('button');
+    likeButton.textContent = 'Like';
+    likeButton.className = 'like-button';
+    let likes = 0;
+    likeButton.addEventListener('click', () => {
+        likes++;
+        likeButton.textContent = `Like (${likes})`;
+    });
+
+    const commentSection = document.createElement('div');
+    commentSection.className = 'comment-section';
+
+    const commentInput = document.createElement('input');
+    commentInput.type = 'text';
+    commentInput.placeholder = 'Add a comment...';
+    commentInput.className = 'comment-input';
+
+    const commentButton = document.createElement('button');
+    commentButton.textContent = 'Comment';
+    commentButton.addEventListener('click', () => {
+        const commentText = commentInput.value;
+        if (commentText !== '') {
+            const comment = document.createElement('p');
+            comment.textContent = commentText;
+            commentSection.appendChild(comment);
+            commentInput.value = '';
+        }
+    });
+
+    post.appendChild(postImageElement);
+    post.appendChild(postTitleElement);
+    post.appendChild(likeButton);
+    post.appendChild(commentInput);
+    post.appendChild(commentButton);
+    post.appendChild(commentSection);
+
+    postContainer.appendChild(post);
+}
+
+    </script>
+</body>
+</html>
